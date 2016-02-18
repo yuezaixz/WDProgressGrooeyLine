@@ -13,6 +13,7 @@
 		A688C9801C75E447003FD3B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A688C97E1C75E447003FD3B4 /* Main.storyboard */; };
 		A688C9821C75E447003FD3B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A688C9811C75E447003FD3B4 /* Assets.xcassets */; };
 		A688C9851C75E447003FD3B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A688C9831C75E447003FD3B4 /* LaunchScreen.storyboard */; };
+		A688C98F1C75E7BE003FD3B4 /* WDProgressGrooeyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = A688C98E1C75E7BE003FD3B4 /* WDProgressGrooeyLine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		A688C9811C75E447003FD3B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A688C9841C75E447003FD3B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A688C9861C75E447003FD3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A688C98D1C75E7BE003FD3B4 /* WDProgressGrooeyLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDProgressGrooeyLine.h; sourceTree = "<group>"; };
+		A688C98E1C75E7BE003FD3B4 /* WDProgressGrooeyLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDProgressGrooeyLine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		A688C9741C75E447003FD3B4 /* WDProgressGrooeyLine */ = {
 			isa = PBXGroup;
 			children = (
+				A688C98C1C75E78D003FD3B4 /* WDProgressGrooeyLine */,
 				A688C9781C75E447003FD3B4 /* AppDelegate.h */,
 				A688C9791C75E447003FD3B4 /* AppDelegate.m */,
 				A688C97B1C75E447003FD3B4 /* ViewController.h */,
@@ -77,6 +81,15 @@
 				A688C9761C75E447003FD3B4 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A688C98C1C75E78D003FD3B4 /* WDProgressGrooeyLine */ = {
+			isa = PBXGroup;
+			children = (
+				A688C98D1C75E7BE003FD3B4 /* WDProgressGrooeyLine.h */,
+				A688C98E1C75E7BE003FD3B4 /* WDProgressGrooeyLine.m */,
+			);
+			name = WDProgressGrooeyLine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +164,7 @@
 			files = (
 				A688C97D1C75E447003FD3B4 /* ViewController.m in Sources */,
 				A688C97A1C75E447003FD3B4 /* AppDelegate.m in Sources */,
+				A688C98F1C75E7BE003FD3B4 /* WDProgressGrooeyLine.m in Sources */,
 				A688C9771C75E447003FD3B4 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

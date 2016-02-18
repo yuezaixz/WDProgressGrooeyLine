@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "WDProgressGrooeyLine.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self.view setBackgroundColor:[UIColor blackColor]];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    WDProgressGrooeyLine *line = [[WDProgressGrooeyLine alloc] initWithFrame:CGRectMake(100, 100, 200, 200)
+                                                                  withColors:@[
+                                                                               [UIColor colorWithRed:233.0/255.0 green:85.0/255.0 blue:19.0/255.0 alpha:1],
+                                                                               [UIColor colorWithRed:245.0/255 green:166.0/255 blue:35.0/255 alpha:1],
+                                                                               [UIColor colorWithRed:126.0/255 green:211.0/255 blue:33.0/255 alpha:1],
+                                                                               [UIColor colorWithRed:74.0/255 green:144.0/255 blue:226.0/255 alpha:1]
+                                                                               ]
+                                                            withPointLengths:@[@76,@120,@54,@80]];
+    [self.view addSubview:line];
 }
 
 - (void)didReceiveMemoryWarning {
