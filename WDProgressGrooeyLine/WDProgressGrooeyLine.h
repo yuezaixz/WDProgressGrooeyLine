@@ -22,6 +22,12 @@
 @property (strong, nonatomic) NSArray *pointColors;
 @property (strong, nonatomic) NSArray *pointLengths;//最后以百分比形式
 
+@property (strong, nonatomic) UIFont *valFont;
+@property (strong, nonatomic) NSString *valUnit;
+@property (strong, nonatomic) UIFont *unitFont;
+
+@property (nonatomic) NSInteger distanceForVal;
+
 - (instancetype)initWithFrame:(CGRect)frame withColors:(NSArray *)colors withPointLengths:(NSArray *)lengths;
 
 @end

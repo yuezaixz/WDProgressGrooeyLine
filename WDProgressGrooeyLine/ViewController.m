@@ -35,6 +35,7 @@
                                                                                ]
                                                             withPointLengths:@[@76,@120,@54,@80]];
     line.delegate = self;
+    line.valUnit = @"ms";
     [self.view addSubview:line];
 }
 

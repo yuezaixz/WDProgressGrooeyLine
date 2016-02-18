@@ -30,6 +30,8 @@
         
         self.pointColors = colors;
         self.pointLengths = lengths;
+        self.distanceForVal = 23;//默认23
+        self.valUnit = @"";
         posX_ = 2;
         sumLength_ = [(NSNumber *)[self.pointLengths valueForKeyPath:@"@sum.doubleValue"] integerValue]+4;
         self.clipsToBounds = NO;
@@ -49,7 +51,9 @@
 
 - (void)animationCurrentPoint {
     if (currentIndex_ == self.pointColors.count) {
-        [self drawCircle:CGPointMake(posX_, CIRCLE_RADIUS+2) circleR:CIRCLE_RADIUS color:self.pointColors[currentIndex_++ -1]];
+        UIColor *lastColor = self.pointColors[currentIndex_++ -1];
+        [self drawCircle:CGPointMake(posX_, CIRCLE_RADIUS+2) circleR:CIRCLE_RADIUS color:lastColor];
+        [self initLabelInIndex:currentIndex_-2 center:CGPointMake(posX_, CIRCLE_RADIUS+2) color:lastColor];
         [self notifyProgress];
         return;
     }
@@ -65,6 +69,7 @@
     
     if (currentIndex_>1) {
         [self drawCircle:sPoint circleR:CIRCLE_RADIUS color:sColor];
+        [self initLabelInIndex:currentIndex_-2 center:sPoint color:sColor];
         [self notifyProgress];
         
     }
@@ -72,6 +77,26 @@
     if (currentIndex_ <= self.pointColors.count) {
         [self performSelector:@selector(animationCurrentPoint) withObject:nil afterDelay:1];
     }
+}
+
+- (void)initLabelInIndex:(NSInteger)progress center:(CGPoint)point color:(UIColor *)color {
+    NSInteger val = [self.pointLengths[progress] integerValue];
+    
+    NSMutableAttributedString *valText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%@",val,self.valUnit]];
+    [valText beginEditing];
+    [valText addAttribute:NSFontAttributeName
+                         value:self.valFont range:NSMakeRange(0, valText.length -self.valUnit.length)];
+    [valText addAttribute:NSFontAttributeName
+                         value:self.unitFont range:NSMakeRange(valText.length -self.valUnit.length, self.valUnit.length)];
+    [valText endEditing];
+    
+    UILabel *label = [[UILabel alloc] init];
+    
+    label.textColor = color;
+    label.attributedText = valText;
+    [label sizeToFit];
+    label.center = CGPointMake(point.x+4, point.y + self.distanceForVal );
+    [self addSubview:label];
 }
 
 - (void)notifyProgress {
@@ -172,6 +197,20 @@
     circleLayer.lineWidth = 1;
     circleLayer.path = path.CGPath;
     [self.layer addSublayer:circleLayer];
+}
+
+-(UIFont *)valFont{
+    if (!_valFont) {
+        _valFont = [UIFont fontWithName:@"DIN Condensed" size:18.0];
+    }
+    return _valFont;
+}
+
+-(UIFont *)unitFont{
+    if (!_unitFont) {
+        _unitFont = [UIFont fontWithName:@"DIN Condensed" size:12.0];
+    }
+    return _unitFont;
 }
 
 @end
