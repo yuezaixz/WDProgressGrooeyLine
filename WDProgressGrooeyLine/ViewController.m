@@ -7,9 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "WDProgressGrooeyLine.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
 
 @end
 
@@ -17,7 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor blackColor]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -35,7 +34,12 @@
                                                                                [UIColor colorWithRed:74.0/255 green:144.0/255 blue:226.0/255 alpha:1]
                                                                                ]
                                                             withPointLengths:@[@76,@120,@54,@80]];
+    line.delegate = self;
     [self.view addSubview:line];
+}
+
+-(void)notifyProgress:(NSInteger)progressIndex{
+    self.countLabel.text = [NSString stringWithFormat:@"%ld",(long)progressIndex];
 }
 
 - (void)didReceiveMemoryWarning {

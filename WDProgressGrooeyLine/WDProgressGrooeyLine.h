@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol WDProgressGrooeyLineDelegate <NSObject>
+
+@optional
+- (void)notifyProgress:(NSInteger)progressIndex;
+
+@end
+
 @interface WDProgressGrooeyLine : UIView
+
+@property (weak, nonatomic) id<WDProgressGrooeyLineDelegate> delegate;
 
 @property (strong, nonatomic) NSArray *pointColors;
 @property (strong, nonatomic) NSArray *pointLengths;//最后以百分比形式

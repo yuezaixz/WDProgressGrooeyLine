@@ -45,13 +45,12 @@
     
     
     [self performSelector:@selector(animationCurrentPoint) withObject:nil afterDelay:1];
-    
-//    [self drawCircle:CGPointMake(0,20) circleR:5 color:[UIColor redColor]];
 }
 
 - (void)animationCurrentPoint {
     if (currentIndex_ == self.pointColors.count) {
-        [self drawCircle:CGPointMake(posX_, CIRCLE_RADIUS+2) circleR:CIRCLE_RADIUS color:self.pointColors[currentIndex_-1]];
+        [self drawCircle:CGPointMake(posX_, CIRCLE_RADIUS+2) circleR:CIRCLE_RADIUS color:self.pointColors[currentIndex_++ -1]];
+        [self notifyProgress];
         return;
     }
     
@@ -66,10 +65,18 @@
     
     if (currentIndex_>1) {
         [self drawCircle:sPoint circleR:CIRCLE_RADIUS color:sColor];
+        [self notifyProgress];
+        
     }
     
     if (currentIndex_ <= self.pointColors.count) {
         [self performSelector:@selector(animationCurrentPoint) withObject:nil afterDelay:1];
+    }
+}
+
+- (void)notifyProgress {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(notifyProgress:)]) {
+        [self.delegate notifyProgress:currentIndex_-1];
     }
 }
 

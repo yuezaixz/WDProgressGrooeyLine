@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WDProgressGrooeyLine.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<WDProgressGrooeyLineDelegate>
 
 
 @end
