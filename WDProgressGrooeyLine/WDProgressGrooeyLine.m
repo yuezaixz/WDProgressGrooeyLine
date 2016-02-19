@@ -20,6 +20,8 @@
     NSInteger currentIndex_;
     NSInteger sumLength_;
     NSInteger posX_;
+    
+    CGPoint lastStartPoint_;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withColors:(NSArray *)colors withPointLengths:(NSArray *)lengths
@@ -42,18 +44,15 @@
 }
 
 - (void)setUp {
-    NSAssert(self.pointColors.count == self.pointLengths.count, @"ERROR:points' color must fit the points' length");
-    NSAssert(self.pointColors.count > 1, @"ERROR:There are at least two point !");
-    
-    
     [self performSelector:@selector(animationCurrentPoint) withObject:nil afterDelay:1];
 }
 
 - (void)animationCurrentPoint {
     if (currentIndex_ == self.pointColors.count) {
         UIColor *lastColor = self.pointColors[currentIndex_++ -1];
-        [self drawCircle:CGPointMake(posX_, CIRCLE_RADIUS+2) circleR:CIRCLE_RADIUS color:lastColor];
-        [self initLabelInIndex:currentIndex_-2 center:CGPointMake(posX_, CIRCLE_RADIUS+2) color:lastColor];
+        CGPoint lastEndPoint = CGPointMake(posX_, CIRCLE_RADIUS+2);
+        [self drawCircle:lastEndPoint circleR:CIRCLE_RADIUS color:lastColor];
+        [self initLabelInIndex:currentIndex_-2 center:CGPointMake((lastStartPoint_.x+lastEndPoint.x)/2, lastStartPoint_.y+self.distanceForVal) color:lastColor];
         [self notifyProgress];
         return;
     }
@@ -69,9 +68,9 @@
     
     if (currentIndex_>1) {
         [self drawCircle:sPoint circleR:CIRCLE_RADIUS color:sColor];
-        [self initLabelInIndex:currentIndex_-2 center:sPoint color:sColor];
+        [self initLabelInIndex:currentIndex_-2 center:CGPointMake((lastStartPoint_.x+sPoint.x)/2, sPoint.y+self.distanceForVal) color:sColor];
         [self notifyProgress];
-        
+        lastStartPoint_ = sPoint;
     }
     
     if (currentIndex_ <= self.pointColors.count) {
@@ -85,9 +84,9 @@
     NSMutableAttributedString *valText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%@",val,self.valUnit]];
     [valText beginEditing];
     [valText addAttribute:NSFontAttributeName
-                         value:self.valFont range:NSMakeRange(0, valText.length -self.valUnit.length)];
+                    value:self.valFont range:NSMakeRange(0, valText.length -self.valUnit.length)];
     [valText addAttribute:NSFontAttributeName
-                         value:self.unitFont range:NSMakeRange(valText.length -self.valUnit.length, self.valUnit.length)];
+                    value:self.unitFont range:NSMakeRange(valText.length -self.valUnit.length, self.valUnit.length)];
     [valText endEditing];
     
     UILabel *label = [[UILabel alloc] init];
@@ -95,7 +94,7 @@
     label.textColor = color;
     label.attributedText = valText;
     [label sizeToFit];
-    label.center = CGPointMake(point.x+4, point.y + self.distanceForVal );
+    label.center = point;
     [self addSubview:label];
 }
 
@@ -185,7 +184,7 @@
 - (void)drawCircle:(CGPoint)point
            circleR:(NSInteger)circleR
              color:(UIColor *)color {
-
+    
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path addArcWithCenter:point radius:circleR startAngle:0.0 endAngle:180.0 clockwise:YES];
     
