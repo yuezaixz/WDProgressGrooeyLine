@@ -30,12 +30,20 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         
+        NSMutableArray *newLengths = [NSMutableArray array];
+        for (NSNumber *lengthItem in lengths) {
+            [newLengths addObject:lengthItem.integerValue>0?lengthItem:@(10)];
+        }
+        
+        NSAssert(colors.count == lengths.count, @"ERROR:points' color must fit the points' length");
+        NSAssert(colors.count > 1, @"ERROR:There are at least two point !");
+        
         self.pointColors = colors;
-        self.pointLengths = lengths;
+        self.pointLengths = [newLengths copy];
         self.distanceForVal = 23;//默认23
         self.valUnit = @"";
         posX_ = 2;
-        sumLength_ = [(NSNumber *)[self.pointLengths valueForKeyPath:@"@sum.doubleValue"] integerValue]+4;
+        sumLength_ = [(NSNumber *)[self.pointLengths valueForKeyPath:@"@sum.doubleValue"] integerValue]+20;
         self.clipsToBounds = NO;
         [self setUp];
         
@@ -50,15 +58,19 @@
 - (void)animationCurrentPoint {
     if (currentIndex_ == self.pointColors.count) {
         UIColor *lastColor = self.pointColors[currentIndex_++ -1];
-        CGPoint lastEndPoint = CGPointMake(posX_, CIRCLE_RADIUS+2);
+        CGPoint lastEndPoint = posX_>lastStartPoint_.x-CIRCLE_RADIUS*2?CGPointMake(posX_, CIRCLE_RADIUS+2):CGPointMake(lastStartPoint_.x+CIRCLE_RADIUS*2, CIRCLE_RADIUS+2);
         [self drawCircle:lastEndPoint circleR:CIRCLE_RADIUS color:lastColor];
-        [self initLabelInIndex:currentIndex_-2 center:CGPointMake((lastStartPoint_.x+lastEndPoint.x)/2, lastStartPoint_.y+self.distanceForVal) color:lastColor];
+        if ( posX_>lastStartPoint_.x-CIRCLE_RADIUS*2) {
+            [self initLabelInIndex:currentIndex_-2 center:CGPointMake((lastStartPoint_.x+lastEndPoint.x)/2, lastStartPoint_.y+self.distanceForVal) color:lastColor];
+        }
         [self notifyProgress];
         return;
     }
     
+    float currentPercent = [self.pointLengths[currentIndex_] floatValue]/sumLength_;
+    
     CGPoint sPoint = CGPointMake(posX_, CIRCLE_RADIUS+2);
-    posX_ += [self.pointLengths[currentIndex_] floatValue]/sumLength_*CGRectGetWidth(self.frame);
+    posX_ += currentPercent*CGRectGetWidth(self.frame);
     CGPoint ePoint = CGPointMake(posX_, CIRCLE_RADIUS+2);
     
     UIColor *sColor = currentIndex_?self.pointColors[currentIndex_-1]:self.pointColors[currentIndex_];
@@ -80,6 +92,9 @@
 
 - (void)initLabelInIndex:(NSInteger)progress center:(CGPoint)point color:(UIColor *)color {
     NSInteger val = [self.pointLengths[progress] integerValue];
+    if (val <= 10) {
+        return;
+    }
     
     NSMutableAttributedString *valText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%@",val,self.valUnit]];
     [valText beginEditing];
